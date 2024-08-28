@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit,DoCheck } from '@angular/core';
 import { Room, RoomList } from './rooms';
 
 @Component({
   selector: 'hinv-rooms',
   templateUrl: './rooms.component.html',
-  styleUrls: ['./rooms.component.scss'] // Corrected property name
+  styleUrls: ['./rooms.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RoomsComponent implements OnInit {
+export class RoomsComponent implements OnInit, DoCheck {
 
   hotelName: string = 'Pilton Hotel';
 
@@ -14,18 +15,29 @@ export class RoomsComponent implements OnInit {
 
   numberOfRooms: number = 100;
 
-  rooms!: Room; // Using type assertion to tell TypeScript that rooms will be defined
+  //rooms!: Room;
 
-  roomList: RoomList[] = []; // Initialize roomList as an array of RoomList
+  selectedRoom!: RoomList;
 
-  constructor() {
-    this.rooms = {
-      totalRooms: 100,
-      availableRooms: 50,
-      bookedRooms: 10
-    };
+  roomList: RoomList[] = [];
 
-    // Create data
+  rooms: Room = {
+    totalRooms: 100,
+    availableRooms: 50,
+    bookedRooms: 10
+  };
+
+  title= 'Room list';
+
+  // constructor() {
+  //   this.rooms = {
+  //     totalRooms: 100,
+  //     availableRooms: 50,
+  //     bookedRooms: 10
+  //   };
+  // }
+
+  ngOnInit() {
     this.roomList = [{
       roomNumber: 1,
       roomType: 'Single Room',
@@ -54,15 +66,37 @@ export class RoomsComponent implements OnInit {
       photos: 'https://www.istockphoto.com/photo/woman-enjoys-magnificent-view-from-hotel-window-gm1447180306-485061744?utm_campaign=srp_photos_top&utm_content=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Fhotel&utm_medium=affiliate&utm_source=unsplash&utm_term=hotel%3A%3A%3A',
       checkInTime: new Date('11-Nov-2024'),
       checkOutTime: new Date('14-Nov-2024'),
-      rating: 5
+      rating: 4.8
     }];
   }
 
-  ngOnInit() {
-    //console.log(this.roomList); // Log the roomList to verify its contents
+  ngDoCheck() {
+    console.log('On changes is logged')  
   }
 
   toggle() {
     this.hideRooms = !this.hideRooms;
+    this.title = "Rooms List";
+  }
+
+
+  selectRoom(selectedRoom: RoomList) {
+    this.selectedRoom = selectedRoom;
+    console.log(`Room ${this.roomList} selected`);
+  }
+
+  addRoom() {
+    const room: RoomList = {
+      roomNumber: 4,
+      roomType: 'Delux',
+      amenities: 'Air Con, Free Wifi, Tv, Bathroom, kitchen',
+      price: 600,
+      photos: 'https://www.istockphoto.com/photo/woman-enjoys-magnificent-view-from-hotel-window-gm1447180306-485061744?utm_campaign=srp_photos_top&utm_content=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Fhotel&utm_medium=affiliate&utm_source=unsplash&utm_term=hotel%3A%3A%3A',
+      checkInTime: new Date('18-Nov-2024'),
+      checkOutTime: new Date('19-Nov-2024'),
+      rating: 4.6
+
+    };
+    this.roomList.push(room);
   }
 }
