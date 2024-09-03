@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit,DoCheck } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, DoCheck, ViewChild, AfterViewInit } from '@angular/core';
 import { Room, RoomList } from './rooms';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'hinv-rooms',
@@ -7,7 +8,7 @@ import { Room, RoomList } from './rooms';
   styleUrls: ['./rooms.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RoomsComponent implements OnInit, DoCheck {
+export class RoomsComponent implements OnInit, DoCheck, AfterViewInit {
 
   hotelName: string = 'Pilton Hotel';
 
@@ -19,15 +20,19 @@ export class RoomsComponent implements OnInit, DoCheck {
 
   selectedRoom!: RoomList;
 
-  roomList: RoomList[] = [];
-
   rooms: Room = {
     totalRooms: 100,
     availableRooms: 50,
     bookedRooms: 10
   };
 
-  title= 'Room list';
+  title = 'Room List';
+
+  roomList: RoomList[] = [];
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
+
+  constructor() { }
+
 
   // constructor() {
   //   this.rooms = {
@@ -38,6 +43,8 @@ export class RoomsComponent implements OnInit, DoCheck {
   // }
 
   ngOnInit() {
+
+    //console.log(this.headerComponent);
     this.roomList = [{
       roomNumber: 1,
       roomType: 'Single Room',
@@ -69,9 +76,14 @@ export class RoomsComponent implements OnInit, DoCheck {
       rating: 4.8
     }];
   }
-
   ngDoCheck() {
-    console.log('On changes is logged')  
+    console.log('On changes is logged')
+  }
+
+  //implement interface AfterViewinit
+  ngAfterViewInit() {
+    //console.log(this.headerComponent);
+    this.headerComponent.title = "Rooms View";
   }
 
   toggle() {
@@ -97,6 +109,8 @@ export class RoomsComponent implements OnInit, DoCheck {
       rating: 4.6
 
     };
-    this.roomList.push(room);
+    //this.roomList.push(room);
+    this.roomList = [...this.roomList, room];
   }
+
 }
