@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, DoCheck, ViewChild, AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, DoCheck, ViewChild, AfterViewInit, QueryList, ViewChildren, SkipSelf } from '@angular/core';
 import { Room, RoomList } from './rooms';
 import { HeaderComponent } from '../header/header.component';
 import { RoomsService } from './services/rooms.service';
@@ -9,7 +9,7 @@ import { RoomsService } from './services/rooms.service';
   styleUrls: ['./rooms.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RoomsComponent implements OnInit, DoCheck, AfterViewInit {
+export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, SkipSelf {
 
   hotelName: string = 'Pilton Hotel';
 
@@ -32,10 +32,11 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit {
   roomList: RoomList[] = [];
 
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
+  @ViewChildren(HeaderComponent) headerChildrenComponent!: QueryList<HeaderComponent>;
 
   //roomService = new RoomsService(); // create instance of class
 
-  constructor(private roomsService: RoomsService) { }
+  constructor(@SkipSelf() private roomsService: RoomsService) { }
 
 
   // constructor() {
