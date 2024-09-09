@@ -9,6 +9,7 @@ import { RoomsListComponent } from './rooms/rooms-list/rooms-list.component';
 import { HeaderComponent } from './header/header.component';
 import { ContainerComponent } from './container/container.component';
 import { EmployeeComponent } from './employee/employee.component';
+import { APP_CONFIG, APP_SERVICE_CONFIG } from './AppConfig/appconfig.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { EmployeeComponent } from './employee/employee.component';
     HeaderComponent,
     ContainerComponent,
     EmployeeComponent
-    
+
   ],
   imports: [
     BrowserModule,
@@ -26,7 +27,13 @@ import { EmployeeComponent } from './employee/employee.component';
     BrowserAnimationsModule
   ],
   providers: [
+    {
+      provide: APP_SERVICE_CONFIG,
+      useValue: APP_CONFIG,
+
+    },
     provideClientHydration()
+
   ],
   bootstrap: [AppComponent]
 })
